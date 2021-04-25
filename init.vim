@@ -9,11 +9,8 @@ call plug#begin('~/.local/share/nvim/site/plugged')
     Plug 'neoclide/coc.nvim', { 'branch': 'release' }
     Plug 'neoclide/coc-rls'
     Plug 'MaskRay/ccls'
-    Plug 'scrooloose/nerdTree'
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-    Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
-    Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
+    Plug 'tibabit/vim-templates'
 call plug#end()
 
 filetype plugin indent on
@@ -51,7 +48,11 @@ set textwidth=114
 set formatoptions=qrn1
 set colorcolumn=120
 
+map <F2> :mksession! ~/vim_session <cr>
+map <F3> :source ~/vim_session <cr>
+
 let g:lightline = { 'colorscheme': 'darcula' }
+colorscheme dracula
 
 " coc stuff
 inoremap <silent><expr> <TAB>
@@ -65,6 +66,8 @@ function! s:check_back_space() abort
     return !col || getline('.')[col - 1] =~# '\s'
 endfunction
 
+autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+
 set updatetime=300
 set shortmess+=c
 set signcolumn=yes
@@ -75,3 +78,6 @@ inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 
 "nerdtree
 nmap <C-n> :NERDTreeToggle<CR>
+
+"netrw bs
+let g:netrw_silent = 1
